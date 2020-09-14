@@ -1,8 +1,11 @@
 import numpy as np
 import pandas as pd
 
-users = pd.read_excel("permissions.xlsx", sheet_name="Users")
-stores = pd.read_excel("permissions.xlsx", sheet_name="Stores")
+# path to xlsx file
+path = "permissions.xlsx"
+
+users = pd.read_excel(path, sheet_name="Users")
+stores = pd.read_excel(path, sheet_name="Stores")
 users.rename(columns={"Unnamed: 0": "user_id"}, inplace=True)
 stores.rename(columns={"Unnamed: 0": "store_id"}, inplace=True)
 users.set_index("user_id", inplace=True)

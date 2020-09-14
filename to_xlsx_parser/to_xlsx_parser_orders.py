@@ -1,13 +1,15 @@
 from datetime import date, datetime
-
+from to_xlsx_parser.utlis.utils_functions import style_table
 import pandas as pd
 
-orders = pd.read_csv("orders.csv", sep=";")
-orders = orders.drop(orders.index[0]).replace(to_replace="#N/D", value="Not_allocated")
+# path to csv file with orders
+path = "orders.csv"
 
 # set date to datetime.now() if you want to select orders after current date
-
 current_date = date(2020, 5, 20)
+
+orders = pd.read_csv(path, sep=";")
+orders = orders.drop(orders.index[0]).replace(to_replace="#N/D", value="Not_allocated")
 
 
 def parse_data(orders: pd.DataFrame) -> pd.DataFrame:
@@ -34,7 +36,10 @@ def create_xlsx_files(orders: pd.DataFrame) -> None:
             f"results_orders/{group[0]}_{datetime.now().strftime('%d%m%Y')}.xlsx",
             date_format="dd/mm/YYYY", engine="xlsxwriter"
         ) as writer:
-            group[1].to_excel(writer, index=False, sheet_name="orders")
+            group[1].to_excel(writer, index=False, sheet_name="orders", header=False, startrow=1)
+
+            style_table(writer, group)
+
 
 if __name__ == "__main__":
     parsed_orders = parse_data(orders)
