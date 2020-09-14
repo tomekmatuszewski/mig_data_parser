@@ -1,6 +1,8 @@
 from datetime import date, datetime
-from to_xlsx_parser.utlis.utils_functions import style_table
+
 import pandas as pd
+
+from to_xlsx_parser.utlis.utils_functions import style_table
 
 # path to csv file with orders
 path = "orders.csv"
@@ -34,9 +36,12 @@ def create_xlsx_files(orders: pd.DataFrame) -> None:
     for group in orders.groupby(by=["Brand Code"]):
         with pd.ExcelWriter(
             f"results_orders/{group[0]}_{datetime.now().strftime('%d%m%Y')}.xlsx",
-            date_format="dd/mm/YYYY", engine="xlsxwriter"
+            date_format="dd/mm/YYYY",
+            engine="xlsxwriter",
         ) as writer:
-            group[1].to_excel(writer, index=False, sheet_name="orders", header=False, startrow=1)
+            group[1].to_excel(
+                writer, index=False, sheet_name="orders", header=False, startrow=1
+            )
 
             style_table(writer, group)
 
